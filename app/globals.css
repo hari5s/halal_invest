@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Color scheme ─────────────────────────────────────── */
+:root {
+  color-scheme: dark;
+  background: #090b0f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ─── Base body — terminal financier ──────────────────── */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #090b0f;
+  background-image:
+    linear-gradient(180deg, rgba(12, 16, 22, 0.97) 0%, rgba(9, 11, 15, 1) 40%),
+    /* Subtle data-grid texture */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 79px,
+      rgba(255, 255, 255, 0.018) 79px,
+      rgba(255, 255, 255, 0.018) 80px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 79px,
+      rgba(255, 255, 255, 0.018) 79px,
+      rgba(255, 255, 255, 0.018) 80px
+    );
+  color: #f4f4f5;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(72, 224, 164, 0.28);
+}
+
+/* ─── Scrollbar ────────────────────────────────────────── */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(244, 244, 245, 0.15);
+  border-radius: 999px;
+}
+
+/* ─── Animations ────────────────────────────────────────── */
+
+/* Cards fade + slide up on mount */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-slide-up {
+  animation: fadeSlideUp 0.35s ease-out both;
+}
+
+/* Staggered children */
+.stagger-children > * {
+  animation: fadeSlideUp 0.35s ease-out both;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 50ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 150ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 250ms; }
+
+/* Price tick — flash green/red on change */
+@keyframes priceTick {
+  0% { opacity: 1; }
+  30% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.animate-price-tick {
+  animation: priceTick 0.4s ease-out;
+}
+
+/* Shimmer for loading skeleton */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.09) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* Emerald glow pulse on important elements */
+@keyframes glowEmerald {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(72, 224, 164, 0); }
+  50% { box-shadow: 0 0 16px 2px rgba(72, 224, 164, 0.15); }
+}
+
+.animate-glow-emerald {
+  animation: glowEmerald 3s ease-in-out infinite;
+}
+
+/* Gold glow pulse */
+@keyframes glowGold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 189, 79, 0); }
+  50% { box-shadow: 0 0 12px 2px rgba(232, 189, 79, 0.12); }
+}
+
+.animate-glow-gold {
+  animation: glowGold 3.5s ease-in-out infinite;
+}
+
+/* Dot blink for "live" indicators */
+@keyframes dotBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.animate-dot-blink {
+  animation: dotBlink 1.8s ease-in-out infinite;
+}
+
+/* ─── Reduced motion overrides ─────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Lightweight Charts integration ───────────────────── */
+.tv-lightweight-charts {
+  border-radius: 0.5rem;
+}
