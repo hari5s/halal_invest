@@ -21,11 +21,11 @@ interface Recap72hProps {
 
 export function Recap72h({ asset }: Recap72hProps) {
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-white/10 bg-ink-900/60 p-4">
+    <div className="surface-panel flex flex-col gap-4 p-4">
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Ce qui explique la courbe</p>
+          <p className="data-label">Ce qui explique la courbe</p>
           <h3 className="mt-1 text-sm font-semibold text-zinc-50">Dernières 72 heures</h3>
         </div>
         <span className="shrink-0 rounded-full border border-gold-400/20 bg-gold-400/[0.07] px-2 py-0.5 text-[11px] text-gold-300/80">
@@ -34,7 +34,7 @@ export function Recap72h({ asset }: Recap72hProps) {
       </div>
 
       {/* Synthesis */}
-      <div className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-3">
+      <div className="rounded-lg border border-white/10 bg-white/[0.035] px-3 py-3">
         <p className="text-xs leading-5 text-zinc-300">{asset.recap72hSummary}</p>
       </div>
 

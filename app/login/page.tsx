@@ -64,12 +64,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#070a0f] p-4">
+    <div className="terminal-grid relative flex min-h-screen items-center justify-center overflow-hidden bg-[#05070b] p-4">
 
       {/* ── Ambient glows ── */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-emerald-500/[0.07] blur-[120px]" />
-        <div className="absolute -bottom-40 right-0 h-[500px] w-[500px] rounded-full bg-emerald-400/[0.04] blur-[100px]" />
         {/* Fine grid */}
         <div
           className="absolute inset-0 opacity-[0.035]"
@@ -103,7 +101,7 @@ export default function LoginPage() {
             </>
           ) : (
             <>
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/10">
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-500/10">
                 <CheckCircle className="h-7 w-7 text-emerald-400" />
               </div>
               <h1 className="text-2xl font-bold text-white">Vérifiez vos emails</h1>
@@ -116,7 +114,7 @@ export default function LoginPage() {
         </div>
 
         {/* Glass card */}
-        <div className="overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.03] shadow-2xl shadow-black/50 backdrop-blur-xl">
+        <div className="surface-panel overflow-hidden">
           <div className="p-8">
             {step === "form" ? (
               <div className="space-y-5">
@@ -126,7 +124,7 @@ export default function LoginPage() {
                   id="btn-google"
                   onClick={handleGoogle}
                   disabled={googleLoading}
-                  className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium text-white transition-all hover:border-white/20 hover:bg-white/[0.08] active:scale-[0.98] disabled:opacity-60"
+                  className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium text-white transition-colors hover:border-white/20 hover:bg-white/[0.08] disabled:opacity-60"
                 >
                   {googleLoading ? (
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/20 border-t-white" />
@@ -156,16 +154,18 @@ export default function LoginPage() {
                       <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-600" />
                       <input
                         id="email"
+                        name="email"
                         type="email"
                         autoComplete="email"
+                        spellCheck={false}
                         placeholder="vous@exemple.com"
                         value={email}
                         onChange={(e) => { setEmail(e.target.value); setError(""); }}
-                        className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3 pl-10 pr-4 text-sm text-white placeholder-zinc-600 outline-none transition focus:border-emerald-500/50 focus:bg-white/[0.06] focus:ring-1 focus:ring-emerald-500/30"
+                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] py-3 pl-10 pr-4 text-sm text-white placeholder-zinc-600 outline-none transition-colors focus-visible:border-emerald-500/50 focus-visible:bg-white/[0.06]"
                       />
                     </div>
                     {error && (
-                      <p className="mt-2 text-xs text-rose-400">{error}</p>
+                      <p className="mt-2 text-xs text-rose-400" aria-live="polite">{error}</p>
                     )}
                   </div>
 
@@ -173,7 +173,7 @@ export default function LoginPage() {
                     id="btn-email"
                     type="submit"
                     disabled={loading}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 py-3 text-sm font-semibold text-black transition-all hover:bg-emerald-400 active:scale-[0.98] disabled:opacity-60"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 py-3 text-sm font-semibold text-black transition-colors hover:bg-emerald-400 disabled:opacity-60"
                   >
                     {loading ? (
                       <div className="h-4 w-4 animate-spin rounded-full border-2 border-black/20 border-t-black" />
@@ -197,7 +197,7 @@ export default function LoginPage() {
             ) : (
               /* ── Email sent confirmation ── */
               <div className="space-y-6 text-center">
-                <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.06] p-5">
+                <div className="rounded-lg border border-emerald-500/15 bg-emerald-500/[0.06] p-5">
                   <p className="text-sm leading-6 text-zinc-300">
                     Cliquez sur le lien dans l&apos;email pour accéder instantanément
                     à votre espace. Le lien expire dans{" "}
@@ -211,7 +211,7 @@ export default function LoginPage() {
 
                 <button
                   onClick={() => { setStep("form"); setEmail(""); }}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.07] bg-white/[0.03] py-3 text-sm text-zinc-400 transition hover:border-white/10 hover:text-white"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.03] py-3 text-sm text-zinc-400 transition-colors hover:border-white/10 hover:text-white"
                 >
                   <ArrowLeft className="h-4 w-4" />
                   Utiliser une autre adresse
@@ -233,7 +233,7 @@ export default function LoginPage() {
         <div className="mt-6 text-center">
           <Link
             href="/"
-            className="text-xs text-zinc-600 transition hover:text-zinc-300"
+            className="text-xs text-zinc-600 transition-colors hover:text-zinc-300"
           >
             ← Retour à l&apos;application
           </Link>

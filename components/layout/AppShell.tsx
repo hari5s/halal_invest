@@ -3,8 +3,23 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useMemo, useState, type ReactNode } from "react";
-import { useSession, signOut } from "next-auth/react";
-import { BarChart3, Bell, Bot, Eye, LayoutDashboard, Newspaper, Search, Settings, ShieldCheck, SlidersHorizontal, UserRound, LogOut, LogIn } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
+import {
+  BarChart3,
+  Bell,
+  Bot,
+  ChevronRight,
+  Eye,
+  LayoutDashboard,
+  LogIn,
+  LogOut,
+  Newspaper,
+  Search,
+  Settings,
+  ShieldCheck,
+  SlidersHorizontal,
+  UserRound
+} from "lucide-react";
 import { searchAssets } from "@/data/assets";
 import { AssetLogo } from "@/components/ui/AssetLogo";
 import { cn } from "@/lib/utils";
@@ -38,34 +53,39 @@ function TopSearch() {
 
   return (
     <form
-      className="relative w-full max-w-2xl"
+      className="relative w-full max-w-3xl"
       onSubmit={function (event) {
         event.preventDefault();
         if (results[0]) openAsset(results[0].slug);
       }}
+      role="search"
     >
       <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" aria-hidden="true" />
       <input
         value={query}
         onChange={function (event) { setQuery(event.target.value); }}
-        placeholder="Rechercher une action, ETF ou crypto"
-        className="h-11 w-full rounded-lg border border-white/10 bg-white/[0.055] pl-10 pr-4 text-sm text-zinc-100 outline-none transition focus:border-emerald-350/50 focus:bg-white/[0.075]"
+        placeholder="Ticker, entreprise, ETF..."
+        aria-label="Rechercher une action, un ETF ou une crypto"
+        name="asset-search"
+        autoComplete="off"
+        className="h-11 w-full rounded-lg border border-white/10 bg-[#071018]/80 pl-10 pr-4 text-sm text-zinc-100 shadow-inner shadow-black/20 outline-none transition-colors placeholder:text-zinc-600 focus-visible:border-emerald-350/60"
       />
       {query && results.length > 0 ? (
-        <div className="absolute left-0 right-0 top-12 z-40 overflow-hidden rounded-lg border border-white/10 bg-ink-900 shadow-panel">
+        <div className="absolute left-0 right-0 top-12 z-40 overflow-hidden rounded-lg border border-white/10 bg-[#071018] shadow-panel">
           {results.map(function (asset) {
             return (
               <button
                 type="button"
                 key={asset.slug}
                 onClick={function () { openAsset(asset.slug); }}
-                className="flex w-full items-center gap-3 px-3 py-3 text-left transition hover:bg-white/[0.06]"
+                className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 border-b border-white/[0.06] px-3 py-3 text-left transition-colors last:border-b-0 hover:bg-white/[0.055]"
               >
                 <AssetLogo name={asset.name} ticker={asset.ticker} tone={asset.logoTone} size="sm" />
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-medium text-zinc-100">{asset.name}</span>
-                  <span className="text-xs text-zinc-500">{asset.ticker} · {asset.type}</span>
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-semibold text-zinc-100">{asset.name}</span>
+                  <span className="value-mono text-xs text-zinc-500">{asset.ticker} / {asset.type}</span>
                 </span>
+                <ChevronRight className="h-4 w-4 text-zinc-600" aria-hidden="true" />
               </button>
             );
           })}
@@ -75,19 +95,42 @@ function TopSearch() {
   );
 }
 
+function BrandMark({ compact = false }: { compact?: boolean }) {
+  return (
+    <Link href="/" className="group flex items-center gap-3 rounded-lg px-2 py-2">
+      <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-emerald-350/35 bg-[#0a1515] font-black text-emerald-300 shadow-card">
+        <span className="absolute inset-x-0 top-0 h-px bg-gold-300/70" aria-hidden="true" />
+        EI
+      </div>
+      {compact ? null : (
+        <div className="min-w-0">
+          <p className="truncate font-semibold text-zinc-50">Ethiq Invest AI</p>
+          <p className="text-xs text-zinc-500">Halal market intelligence</p>
+        </div>
+      )}
+    </Link>
+  );
+}
+
 function Sidebar() {
   const pathname = usePathname();
-  return (
-    <aside className="fixed inset-y-0 left-0 z-30 hidden w-72 border-r border-white/10 bg-ink-950/[0.92] px-4 py-5 backdrop-blur lg:flex lg:flex-col">
-      <Link href="/" className="flex items-center gap-3 rounded-lg px-2 py-2">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-350 to-gold-400 font-black text-ink-950">EI</div>
-        <div>
-          <p className="font-semibold text-zinc-50">Ethiq Invest AI</p>
-          <p className="text-xs text-zinc-500">Analyse éthique & IA</p>
-        </div>
-      </Link>
 
-      <nav className="mt-8 space-y-1">
+  return (
+    <aside className="fixed inset-y-0 left-0 z-30 hidden w-[268px] border-r border-white/10 bg-[#05070b]/95 px-4 py-5 backdrop-blur-xl lg:flex lg:flex-col">
+      <BrandMark />
+
+      <div className="mt-5 rounded-lg border border-white/10 bg-white/[0.035] p-3">
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-zinc-500">Session</span>
+          <span className="value-mono text-emerald-300">DEMO</span>
+        </div>
+        <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+          <div className="rounded-md border border-emerald-350/20 bg-emerald-350/[0.07] px-2 py-2 text-emerald-200">Actions</div>
+          <div className="rounded-md border border-gold-400/20 bg-gold-400/[0.07] px-2 py-2 text-gold-200">ETF halal</div>
+        </div>
+      </div>
+
+      <nav className="mt-6 space-y-1" aria-label="Navigation principale">
         {navItems.map(function (item) {
           const Icon = item.icon;
           const active = isActive(pathname, item.href);
@@ -96,19 +139,23 @@ function Sidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition",
-                active ? "bg-emerald-350/12 text-emerald-350" : "text-zinc-400 hover:bg-white/[0.055] hover:text-zinc-100"
+                "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+                active
+                  ? "border border-emerald-350/25 bg-emerald-350/[0.11] text-emerald-200"
+                  : "border border-transparent text-zinc-500 hover:border-white/10 hover:bg-white/[0.045] hover:text-zinc-100"
               )}
             >
               <Icon className="h-4 w-4" aria-hidden="true" />
-              {item.label}
+              <span className="min-w-0 flex-1 truncate">{item.label}</span>
+              {active ? <span className="h-1.5 w-1.5 rounded-full bg-emerald-350" aria-hidden="true" /> : null}
             </Link>
           );
         })}
       </nav>
 
-      <div className="mt-auto rounded-lg border border-gold-400/25 bg-gold-400/[0.08] p-4 text-xs leading-5 text-gold-100/90">
-        Prototype — données de démonstration — ne constitue pas un conseil en investissement.
+      <div className="mt-auto halal-rail overflow-hidden rounded-lg border border-gold-400/20 bg-gold-400/[0.055] p-4 pl-5 text-xs leading-5 text-gold-100/90">
+        <p className="font-semibold text-gold-200">Prototype</p>
+        <p className="mt-1 text-gold-100/70">Données de démonstration. Aucun conseil financier ni verdict religieux définitif.</p>
       </div>
     </aside>
   );
@@ -117,15 +164,24 @@ function Sidebar() {
 function MobileNav() {
   const pathname = usePathname();
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-ink-950/95 px-2 py-2 backdrop-blur lg:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#05070b]/95 px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl lg:hidden">
       <div className="custom-scrollbar flex gap-1 overflow-x-auto">
         {navItems.map(function (item) {
           const Icon = item.icon;
           const active = isActive(pathname, item.href);
           return (
-            <Link key={item.href} href={item.href} className={cn("flex min-w-20 flex-col items-center gap-1 rounded-lg px-2 py-2 text-[11px]", active ? "bg-emerald-350/12 text-emerald-350" : "text-zinc-500")}>
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "flex min-w-20 flex-col items-center gap-1 rounded-lg border px-2 py-2 text-[11px] transition-colors",
+                active
+                  ? "border-emerald-350/25 bg-emerald-350/[0.11] text-emerald-200"
+                  : "border-transparent text-zinc-500"
+              )}
+            >
               <Icon className="h-4 w-4" aria-hidden="true" />
-              {item.label}
+              <span className="truncate">{item.label}</span>
             </Link>
           );
         })}
@@ -134,68 +190,99 @@ function MobileNav() {
   );
 }
 
+function StatusRibbon() {
+  return (
+    <div className="hidden items-center gap-3 text-xs text-zinc-500 xl:flex">
+      <span className="flex items-center gap-1.5">
+        <span className="h-1.5 w-1.5 rounded-full bg-emerald-350 animate-dot-blink" aria-hidden="true" />
+        Marché demo
+      </span>
+      <span className="h-3 w-px bg-white/10" aria-hidden="true" />
+      <span className="value-mono text-zinc-400">EUR / USD</span>
+      <span className="h-3 w-px bg-white/10" aria-hidden="true" />
+      <span className="text-gold-300">Conformité à vérifier</span>
+    </div>
+  );
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
 
+  if (pathname.startsWith("/login")) {
+    return <>{children}</>;
+  }
+
+  const user = session?.user as { name?: string | null; email?: string | null; phoneNumber?: string | null } | undefined;
+  const userLabel = user?.name || user?.email || user?.phoneNumber || "Mon profil";
+
   return (
     <div className="min-h-screen text-zinc-100">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-emerald-350 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink-950">
+        Aller au contenu
+      </a>
       <Sidebar />
-      <div className="lg:pl-72">
-        <header className="sticky top-0 z-20 border-b border-white/10 bg-ink-950/[0.82] px-4 py-3 backdrop-blur sm:px-6 lg:px-8">
+      <div className="lg:pl-[268px]">
+        <header className="sticky top-0 z-20 border-b border-white/10 bg-[#05070b]/88 px-4 py-3 backdrop-blur-xl sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-4">
-            {/* Left side (mobile logo + spacing to balance center) */}
-            <div className="flex items-center lg:w-[200px] shrink-0">
-              <Link href="/" className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-350 to-gold-400 font-black text-ink-950 lg:hidden">EI</Link>
+            <div className="flex shrink-0 items-center gap-3 lg:hidden">
+              <BrandMark compact />
             </div>
 
-            {/* Center (Search) */}
-            <div className="flex-1 flex justify-center max-w-2xl">
-              <div className="w-full">
-                <TopSearch />
-              </div>
+            <div className="hidden min-w-[190px] shrink-0 lg:block">
+              <StatusRibbon />
             </div>
 
-            {/* Right side (Actions & Auth) */}
-            <div className="flex items-center justify-end gap-2 shrink-0 lg:w-[350px]">
-              <button className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.045] text-zinc-300 transition hover:text-zinc-50 md:flex" aria-label="Filtres">
+            <div className="flex min-w-0 flex-1 justify-center">
+              <TopSearch />
+            </div>
+
+            <div className="flex shrink-0 items-center justify-end gap-2 lg:min-w-[310px]">
+              <button className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-white/20 hover:text-zinc-100 md:flex" aria-label="Ouvrir les filtres">
                 <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
               </button>
-              <button className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.045] text-zinc-300 transition hover:text-zinc-50 sm:flex" aria-label="Notifications">
+              <button className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-white/20 hover:text-zinc-100 sm:flex" aria-label="Voir les notifications">
                 <Bell className="h-4 w-4" aria-hidden="true" />
               </button>
-              
+
               {session ? (
                 <div className="flex items-center gap-2">
-                  <button 
+                  <button
+                    type="button"
                     onClick={() => router.push("/parametres")}
-                    className="flex h-11 shrink-0 items-center gap-2 rounded-lg border border-white/10 bg-white/[0.045] px-3 text-sm text-zinc-200 transition hover:text-zinc-50"
+                    aria-label="Ouvrir le profil"
+                    className="flex h-11 shrink-0 items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 text-sm text-zinc-200 transition-colors hover:border-white/20 hover:text-zinc-50"
                   >
                     <UserRound className="h-4 w-4" aria-hidden="true" />
-                    <span className="hidden xl:inline">{(session.user as any)?.name || session.user?.email || (session.user as any)?.phoneNumber || "Mon Profil"}</span>
+                    <span className="hidden max-w-36 truncate xl:inline">{userLabel}</span>
                   </button>
-                  <button 
+                  <button
+                    type="button"
                     onClick={() => signOut()}
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.045] text-zinc-300 transition hover:text-rose-400" 
-                    aria-label="Déconnexion"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:border-rose-400/30 hover:text-rose-300"
+                    aria-label="Se déconnecter"
                   >
                     <LogOut className="h-4 w-4" aria-hidden="true" />
                   </button>
                 </div>
               ) : (
-                <button 
+                <button
+                  type="button"
                   onClick={() => router.push("/login")}
-                  className="flex h-11 shrink-0 items-center gap-2 rounded-lg bg-emerald-500 px-4 text-sm font-semibold text-ink-950 transition hover:bg-emerald-400"
+                  aria-label="Connexion"
+                  className="flex h-11 shrink-0 items-center gap-2 rounded-lg bg-emerald-350 px-4 text-sm font-semibold text-ink-950 transition-colors hover:bg-emerald-300"
                 >
                   <LogIn className="h-4 w-4" aria-hidden="true" />
-                  <span className="hidden md:inline">Connexion / Inscription</span>
+                  <span className="hidden md:inline">Connexion</span>
                 </button>
               )}
             </div>
           </div>
         </header>
-        <main className="px-4 pb-28 pt-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32 lg:pb-16">
-          <div className="w-full">{children}</div>
+
+        <main id="main-content" className="px-4 pb-28 pt-5 sm:px-6 md:px-8 lg:pb-16 xl:px-10 2xl:px-12">
+          <div className="mx-auto w-full max-w-[1500px]">{children}</div>
         </main>
       </div>
       <MobileNav />

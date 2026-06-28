@@ -6,8 +6,13 @@ export function AssetLogo({ name, ticker, tone, size = "md" }: { name: string; t
   if (size === "lg") sizeClass = "h-16 w-16 text-lg";
 
   return (
-    <div className={cn("flex shrink-0 items-center justify-center rounded-lg bg-gradient-to-br font-bold text-ink-950 shadow-panel", tone, sizeClass)} aria-label={name}>
-      {ticker.slice(0, 2)}
+    <div
+      className={cn("relative flex shrink-0 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-gradient-to-br font-black text-ink-950 shadow-card", tone, sizeClass)}
+      aria-label={name}
+      translate="no"
+    >
+      <span className="absolute inset-x-1 top-1 h-px bg-white/55" aria-hidden="true" />
+      <span className="value-mono">{ticker.slice(0, 2)}</span>
     </div>
   );
 }

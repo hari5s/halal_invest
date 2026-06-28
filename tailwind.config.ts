@@ -12,6 +12,7 @@ const config: Config = {
     extend: {
       colors: {
         ink: {
+          990: "#05070b",
           950: "#090b0f",
           900: "#0f1319",
           850: "#141922",
@@ -23,6 +24,7 @@ const config: Config = {
           500: "#c9962e"
         },
         emerald: {
+          300: "#6ee7b7",
           350: "#48e0a4"
         },
         rose: {
@@ -33,9 +35,9 @@ const config: Config = {
         }
       },
       boxShadow: {
-        panel: "0 16px 48px rgba(0, 0, 0, 0.32)",
-        card: "0 4px 16px rgba(0, 0, 0, 0.24)",
-        glow: "0 0 24px rgba(72, 224, 164, 0.18)"
+        panel: "0 18px 55px rgba(0, 0, 0, 0.34)",
+        card: "0 14px 38px rgba(0, 0, 0, 0.26)",
+        glow: "0 0 24px rgba(72, 224, 164, 0.16)"
       },
       animation: {
         "fade-slide-up": "fadeSlideUp 0.35s ease-out both",

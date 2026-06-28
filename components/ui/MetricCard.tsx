@@ -16,11 +16,11 @@ export function MetricCard({ label, value, detail, icon: Icon, tone = "default" 
   if (tone === "rose") iconClass = "border-rose-400/25 bg-rose-400/10 text-rose-300";
 
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.045] p-4">
+    <div className="surface-card p-4">
       <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">{label}</p>
-          <p className="mt-2 text-xl font-semibold text-zinc-50">{value}</p>
+        <div className="min-w-0">
+          <p className="data-label truncate">{label}</p>
+          <p className="value-mono mt-2 text-xl font-semibold text-zinc-50">{value}</p>
         </div>
         {Icon ? (
           <div className={cn("flex h-9 w-9 items-center justify-center rounded-lg border", iconClass)}>

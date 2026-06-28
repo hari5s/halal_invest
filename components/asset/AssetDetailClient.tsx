@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Activity, AlertTriangle, BarChart3, Bot, Check, Database, ExternalLink, Landmark, LineChart, MessageCircle, Newspaper, Plus, ShieldCheck, TrendingUp, Wallet, Wifi } from "lucide-react";
+import { Activity, AlertTriangle, BarChart3, Bot, Check, Database, ExternalLink, Landmark, LineChart, MessageCircle, Newspaper, Plus, ShieldCheck, TrendingUp, Wallet } from "lucide-react";
 import type { Asset, AssetNews, TimeRange } from "@/data/assets";
 import { timeRanges } from "@/data/assets";
 import { AIPanel } from "@/components/asset/AIPanel";
@@ -18,7 +18,6 @@ import { changeTone, formatCurrency, formatPercent } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import useSWR from "swr";
 import { finnhubMarketDataProvider } from "@/data/services";
-import { Check as CheckIcon, Plus as PlusIcon } from "lucide-react";
 
 const tabs = [
   { id: "overview", label: "Vue générale", icon: LineChart },
@@ -38,7 +37,7 @@ function BulletPanel({ title, items, tone = "default" }: { title: string; items:
   if (tone === "gold") dotClass = "bg-gold-400";
   if (tone === "rose") dotClass = "bg-rose-400";
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4">
+    <div className="surface-card p-4">
       <h3 className="font-semibold text-zinc-50">{title}</h3>
       <ul className="mt-3 space-y-3 text-sm leading-6 text-zinc-400">
         {items.map(function (item) {
@@ -146,7 +145,7 @@ function NewsTab({ news, isLive, isLoading }: { news: AssetNews[]; isLive: boole
         ) : null}
       </div>
 
-      <div className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.04]">
+      <div className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.035]">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-emerald-400" />
@@ -155,7 +154,7 @@ function NewsTab({ news, isLive, isLoading }: { news: AssetNews[]; isLive: boole
           <p className="p-6 text-center text-sm text-zinc-500">Aucune actualité disponible.</p>
         ) : (
           news.map((item, i) => (
-            <article key={i} className="grid gap-3 border-b border-white/10 p-4 last:border-b-0 md:grid-cols-[1fr_auto_auto] md:items-center">
+            <article key={i} className="ticker-row grid gap-3 border-b border-white/10 p-4 last:border-b-0 md:grid-cols-[1fr_auto_auto] md:items-center">
               <div>
                 {(item as any).url ? (
                   <a href={(item as any).url} target="_blank" rel="noopener noreferrer" className="group flex items-start gap-1.5">
@@ -180,15 +179,15 @@ function NewsTab({ news, isLive, isLoading }: { news: AssetNews[]; isLive: boole
 function AiTab({ asset }: { asset: Asset }) {
   return (
     <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
-      <div className="rounded-lg border border-emerald-350/20 bg-emerald-350/[0.055] p-5">
+      <div className="surface-panel halal-rail p-5 pl-6">
         <p className="text-sm text-emerald-350">Score global fictif</p>
-        <p className="mt-2 text-6xl font-semibold text-zinc-50">{asset.aiScores.global}</p>
+        <p className="value-mono mt-2 text-6xl font-semibold text-zinc-50">{asset.aiScores.global}</p>
         <p className="mt-3 text-sm leading-6 text-zinc-300">{asset.aiSummary}</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {asset.sources.map(function (source) { return <StatusBadge key={source}>{source}</StatusBadge>; })}
         </div>
       </div>
-      <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5">
+      <div className="surface-card p-5">
         <div className="space-y-5">
           <ScoreBar label="Fondamentaux" value={asset.aiScores.fundamentals} />
           <ScoreBar label="Technique" value={asset.aiScores.technical} />
@@ -203,7 +202,7 @@ function AiTab({ asset }: { asset: Asset }) {
 function EthicsTab({ asset }: { asset: Asset }) {
   return (
     <div className="space-y-5">
-      <div className="rounded-lg border border-gold-400/25 bg-gold-400/[0.055] p-5">
+      <div className="surface-panel halal-rail p-5 pl-6">
         <StatusBadge>Conformité à vérifier via une source externe</StatusBadge>
         <p className="mt-4 text-sm leading-6 text-zinc-300">
           Ce prototype ne présente jamais de verdict religieux définitif. Les critères réels devront venir de Musaffa, AAOIFI ou d'un conseil charia documenté.
@@ -218,7 +217,7 @@ function EthicsTab({ asset }: { asset: Asset }) {
         <MetricCard label="Revenus non conformes" value="À auditer" detail={asset.ethics.nonCompliantRevenue} icon={Database} tone="gold" />
         <MetricCard label="Purification potentielle" value="Non calculée" detail={asset.ethics.purification} icon={Activity} />
       </div>
-      <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5">
+      <div className="surface-card p-5">
         <h3 className="font-semibold text-zinc-50">Méthodologie</h3>
         <p className="mt-3 text-sm leading-6 text-zinc-400">{asset.ethics.methodology}</p>
       </div>
@@ -248,19 +247,19 @@ export function AssetDetailClient({ asset }: { asset: Asset }) {
   return (
     <div className="space-y-6">
       {/* Asset header */}
-      <section className="rounded-xl border border-white/10 bg-white/[0.045] p-5 shadow-panel">
+      <section className="surface-panel terminal-grid halal-rail p-5 pl-6 sm:p-6 sm:pl-7">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
           <div className="flex min-w-0 gap-4">
             <AssetLogo name={asset.name} ticker={asset.ticker} tone={asset.logoTone} size="lg" />
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="truncate text-3xl font-semibold text-zinc-50">{asset.name}</h1>
-                <span className="rounded-lg border border-white/10 bg-white/[0.045] px-2 py-1 text-sm text-zinc-400">{asset.ticker}</span>
+                <span className="value-mono rounded-lg border border-white/10 bg-white/[0.045] px-2 py-1 text-sm text-zinc-400">{asset.ticker}</span>
                 <span className="rounded-lg border border-white/10 bg-white/[0.045] px-2 py-1 text-xs text-zinc-500">{asset.type}</span>
               </div>
               <div className="mt-3 flex flex-wrap items-center gap-3">
-                <p className="text-3xl font-semibold text-zinc-50">{formatCurrency(dynamicAsset.price, dynamicAsset.currency)}</p>
-                <p className={changeTone(dynamicAsset.change24h) + " text-sm font-medium"}>{formatPercent(dynamicAsset.change24h)} 24h</p>
+                <p className="value-mono text-3xl font-semibold text-zinc-50">{formatCurrency(dynamicAsset.price, dynamicAsset.currency)}</p>
+                <p className={changeTone(dynamicAsset.change24h) + " value-mono text-sm font-semibold"}>{formatPercent(dynamicAsset.change24h)} 24h</p>
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
                 <SentimentBadge value={asset.sentiment} />
@@ -271,7 +270,7 @@ export function AssetDetailClient({ asset }: { asset: Asset }) {
           <button
             type="button"
             onClick={function () { watchlist.toggle(asset.slug); }}
-            className="flex h-11 items-center justify-center gap-2 rounded-lg border border-emerald-350/30 bg-emerald-350/10 px-4 text-sm font-medium text-emerald-350 transition hover:bg-emerald-350 hover:text-ink-950"
+            className="flex h-11 self-start items-center justify-center gap-2 rounded-lg border border-emerald-350/30 bg-emerald-350/10 px-4 text-sm font-semibold text-emerald-350 transition-colors hover:bg-emerald-350 hover:text-ink-950"
           >
             {inWatchlist ? <Check className="h-4 w-4" aria-hidden="true" /> : <Plus className="h-4 w-4" aria-hidden="true" />}
             {inWatchlist ? "Dans la watchlist" : "Ajouter à ma watchlist"}
@@ -280,7 +279,7 @@ export function AssetDetailClient({ asset }: { asset: Asset }) {
       </section>
 
       {/* Tabs */}
-      <div className="custom-scrollbar flex gap-2 overflow-x-auto rounded-xl border border-white/10 bg-white/[0.035] p-2">
+      <div className="custom-scrollbar flex gap-2 overflow-x-auto rounded-lg border border-white/10 bg-black/20 p-2">
         {tabs.map(function (tab) {
           const Icon = tab.icon;
           return (
@@ -289,7 +288,7 @@ export function AssetDetailClient({ asset }: { asset: Asset }) {
               type="button"
               onClick={function () { setActiveTab(tab.id); }}
               className={cn(
-                "flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-sm transition",
+                "flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
                 activeTab === tab.id ? "bg-emerald-350 text-ink-950" : "text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-100"
               )}
             >

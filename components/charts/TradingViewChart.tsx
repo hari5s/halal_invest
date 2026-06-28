@@ -78,14 +78,14 @@ export function TradingViewChart({
     <div className="flex flex-col gap-3">
       {/* ── Period selector ─────────────────────────────────────────────── */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
-        <div className="flex rounded-lg border border-white/10 bg-white/[0.04] p-1">
+        <div className="flex rounded-lg border border-white/10 bg-black/25 p-1">
           {ranges.map((r) => (
             <button
               key={r}
               type="button"
               onClick={() => onRangeChange(r)}
               className={cn(
-                "rounded-md px-3 py-1.5 text-xs font-medium transition-all",
+                "value-mono rounded-md px-3 py-1.5 text-xs font-semibold transition-colors",
                 range === r
                   ? "bg-emerald-350 text-ink-950 shadow-sm"
                   : "text-zinc-400 hover:text-zinc-100"
@@ -107,7 +107,8 @@ export function TradingViewChart({
       </div>
 
       {/* ── iframe ──────────────────────────────────────────────────────── */}
-      <div className="relative h-[500px] w-full overflow-hidden rounded-xl border border-white/10 bg-[#0d1117]">
+      <div className="relative h-[500px] w-full overflow-hidden rounded-lg border border-white/10 bg-[#0b1118] shadow-card">
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px bg-emerald-350/45" aria-hidden="true" />
         <iframe
           key={src}            /* force remount on URL change */
           src={src}
@@ -118,7 +119,7 @@ export function TradingViewChart({
         />
       </div>
 
-      <p className="text-[10px] text-zinc-700 text-right select-none">
+      <p className="text-right text-[10px] text-zinc-700 select-none">
         Données fournies par TradingView · Délai 15 min (gratuit) · Marchés fermés le week-end
       </p>
     </div>

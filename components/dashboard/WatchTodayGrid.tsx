@@ -22,7 +22,7 @@ function WatchTodayCard({ asset }: { asset: Asset }) {
   return (
     <Link
       href={"/assets/" + asset.slug}
-      className="group rounded-xl border border-white/10 bg-white/[0.045] p-4 transition-all duration-200 hover:border-emerald-350/30 hover:bg-white/[0.07] hover:shadow-card"
+      className="group surface-card surface-card-hover p-4"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
@@ -32,13 +32,13 @@ function WatchTodayCard({ asset }: { asset: Asset }) {
             <p className="text-xs text-zinc-500">{asset.ticker} · {asset.type}</p>
           </div>
         </div>
-        <ArrowUpRight className="h-4 w-4 shrink-0 text-zinc-600 transition-all duration-200 group-hover:text-emerald-350 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+        <ArrowUpRight className="h-4 w-4 shrink-0 text-zinc-600 transition-colors duration-200 group-hover:text-emerald-350" aria-hidden="true" />
       </div>
 
       <div className="mt-5 flex items-end justify-between gap-3">
         <div>
-          <p className="text-2xl font-semibold text-zinc-50">{formatCurrency(price, asset.currency)}</p>
-          <p className={changeTone(change24h) + " mt-1 flex items-center gap-1 text-sm font-medium"}>
+          <p className="value-mono text-2xl font-semibold text-zinc-50">{formatCurrency(price, asset.currency)}</p>
+          <p className={changeTone(change24h) + " value-mono mt-1 flex items-center gap-1 text-sm font-semibold"}>
             <span className={positive ? "inline-block h-0 w-0 border-l-4 border-r-4 border-b-[6px] border-l-transparent border-r-transparent border-b-emerald-350 mb-0.5" : "inline-block h-0 w-0 border-l-4 border-r-4 border-t-[6px] border-l-transparent border-r-transparent border-t-rose-400 mt-0.5"} aria-hidden="true" />
             {formatPercent(change24h)} 24h
           </p>
@@ -55,11 +55,11 @@ function WatchTodayCard({ asset }: { asset: Asset }) {
         <span className="text-[10px] text-zinc-600">Score IA</span>
         <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
           <div
-            className={`h-full rounded-full transition-all duration-500 ${asset.aiScores.global >= 70 ? "bg-emerald-350" : asset.aiScores.global >= 50 ? "bg-gold-400" : "bg-rose-400"}`}
+            className={`h-full rounded-full transition-[width] duration-500 ${asset.aiScores.global >= 70 ? "bg-emerald-350" : asset.aiScores.global >= 50 ? "bg-gold-400" : "bg-rose-400"}`}
             style={{ width: asset.aiScores.global + "%" }}
           />
         </div>
-        <span className="text-[10px] font-medium text-zinc-400">{asset.aiScores.global}</span>
+        <span className="value-mono text-[10px] font-medium text-zinc-400">{asset.aiScores.global}</span>
       </div>
     </Link>
   );
@@ -67,7 +67,7 @@ function WatchTodayCard({ asset }: { asset: Asset }) {
 
 export function WatchTodayGrid() {
   return (
-    <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3 xl:gap-6 stagger-children">
+    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 stagger-children">
       {watchedAssets.map((asset) => (
         <WatchTodayCard key={asset.slug} asset={asset} />
       ))}

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Bot, SendHorizontal, ChevronRight, Loader2, Sparkles } from "lucide-react";
 import type { Asset } from "@/data/assets";
 import { createMockChatResponse } from "@/lib/mock-chat";
-import { cn } from "@/lib/utils";
 
 interface AIPanelProps {
   asset: Asset;
@@ -31,7 +30,7 @@ export function AIPanel({ asset, onOpenChat }: AIPanelProps) {
   }
 
   return (
-    <div className="rounded-xl border border-emerald-350/20 bg-ink-900/70 p-4">
+    <div className="surface-panel p-4">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
@@ -48,7 +47,7 @@ export function AIPanel({ asset, onOpenChat }: AIPanelProps) {
         <button
           type="button"
           onClick={onOpenChat}
-          className="hidden shrink-0 items-center gap-1 text-xs text-zinc-500 transition hover:text-emerald-350 sm:flex"
+          className="hidden shrink-0 items-center gap-1 text-xs text-zinc-500 transition-colors hover:text-emerald-350 sm:flex"
         >
           Discussion complète <ChevronRight className="h-3.5 w-3.5" />
         </button>
@@ -67,7 +66,7 @@ export function AIPanel({ asset, onOpenChat }: AIPanelProps) {
                 key={q}
                 type="button"
                 onClick={function () { handleAsk(q); }}
-                className="rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1.5 text-xs text-zinc-400 transition hover:border-emerald-350/30 hover:text-zinc-200"
+                className="rounded-md border border-white/10 bg-white/[0.035] px-2.5 py-1.5 text-xs text-zinc-400 transition-colors hover:border-emerald-350/30 hover:text-zinc-200"
               >
                 {q}
               </button>
@@ -85,13 +84,16 @@ export function AIPanel({ asset, onOpenChat }: AIPanelProps) {
           value={input}
           onChange={function (e) { setInput(e.target.value); }}
           placeholder={"Question sur " + asset.ticker + "…"}
-          className="h-9 min-w-0 flex-1 rounded-lg border border-white/10 bg-white/[0.05] pl-3 pr-3 text-sm text-zinc-100 outline-none transition focus:border-emerald-350/40"
+          aria-label={"Question sur " + asset.ticker}
+          name="asset-ai-question"
+          autoComplete="off"
+          className="h-9 min-w-0 flex-1 rounded-lg border border-white/10 bg-[#071018]/80 pl-3 pr-3 text-sm text-zinc-100 outline-none transition-colors focus-visible:border-emerald-350/60"
           disabled={loading}
         />
         <button
           type="submit"
           disabled={loading || !input.trim()}
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-350 text-ink-950 transition hover:bg-emerald-300 disabled:opacity-40"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-350 text-ink-950 transition-colors hover:bg-emerald-300 disabled:opacity-40"
           aria-label="Envoyer"
         >
           <SendHorizontal className="h-3.5 w-3.5" aria-hidden="true" />
@@ -100,7 +102,7 @@ export function AIPanel({ asset, onOpenChat }: AIPanelProps) {
 
       {/* Loading */}
       {loading && (
-        <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500">
+        <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500" aria-live="polite">
           <Loader2 className="h-3.5 w-3.5 animate-spin text-emerald-350" />
           Analyse des données mockées…
         </div>

@@ -194,7 +194,7 @@ export function CandleChart({ data, currency, range, ranges, onRangeChange }: Ca
       {/* Controls row */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         {/* Period selector */}
-        <div className="flex rounded-lg border border-white/10 bg-white/[0.04] p-1">
+        <div className="flex rounded-lg border border-white/10 bg-black/25 p-1">
           {ranges.map(function (r) {
             return (
               <button
@@ -202,7 +202,7 @@ export function CandleChart({ data, currency, range, ranges, onRangeChange }: Ca
                 type="button"
                 onClick={function () { onRangeChange(r); }}
                 className={cn(
-                  "rounded-md px-3 py-1.5 text-xs font-medium transition-all",
+                  "value-mono rounded-md px-3 py-1.5 text-xs font-semibold transition-colors",
                   range === r
                     ? "bg-emerald-350 text-ink-950 shadow-sm"
                     : "text-zinc-400 hover:text-zinc-100"
@@ -228,20 +228,22 @@ export function CandleChart({ data, currency, range, ranges, onRangeChange }: Ca
           )}
 
           {/* Mode toggle: candle ↔ line */}
-          <div className="flex rounded-lg border border-white/10 bg-white/[0.04] p-1">
+          <div className="flex rounded-lg border border-white/10 bg-black/25 p-1">
             <button
               type="button"
               onClick={function () { setMode("candle"); }}
-              className={cn("rounded-md px-2.5 py-1.5 text-xs transition", mode === "candle" ? "bg-white/10 text-zinc-50" : "text-zinc-500 hover:text-zinc-300")}
+              className={cn("rounded-md px-2.5 py-1.5 text-xs transition-colors", mode === "candle" ? "bg-white/10 text-zinc-50" : "text-zinc-500 hover:text-zinc-300")}
               title="Chandeliers japonais"
+              aria-label="Afficher les chandeliers japonais"
             >
               ▌▌
             </button>
             <button
               type="button"
               onClick={function () { setMode("line"); }}
-              className={cn("rounded-md px-2.5 py-1.5 text-xs transition", mode === "line" ? "bg-white/10 text-zinc-50" : "text-zinc-500 hover:text-zinc-300")}
+              className={cn("rounded-md px-2.5 py-1.5 text-xs transition-colors", mode === "line" ? "bg-white/10 text-zinc-50" : "text-zinc-500 hover:text-zinc-300")}
               title="Courbe de prix"
+              aria-label="Afficher la courbe de prix"
             >
               ╌
             </button>
@@ -250,7 +252,7 @@ export function CandleChart({ data, currency, range, ranges, onRangeChange }: Ca
       </div>
 
       {/* Chart container */}
-      <div className="relative h-[340px] w-full overflow-hidden rounded-xl border border-white/10 bg-ink-900/60">
+      <div className="relative h-[340px] w-full overflow-hidden rounded-lg border border-white/10 bg-[#0b1118] shadow-card">
         <div ref={containerRef} className="absolute inset-0" />
         <div className="pointer-events-none absolute bottom-2 right-2 flex items-center gap-1.5 text-[10px] text-emerald-400/60 select-none">
           <span className="relative flex h-1.5 w-1.5">

@@ -45,12 +45,12 @@ export function AssetChat({ asset }: { asset: Asset }) {
 
   return (
     <div className="grid gap-4 lg:grid-cols-[0.86fr_1.14fr]">
-      <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4">
+      <div className="surface-card p-4">
         <h3 className="font-semibold text-zinc-50">Questions rapides</h3>
         <div className="mt-4 flex flex-col gap-2">
           {examples.map(function (example) {
             return (
-              <button key={example} type="button" onClick={function () { send(example); }} className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-left text-sm text-zinc-300 transition hover:border-emerald-350/35 hover:text-zinc-50">
+              <button key={example} type="button" onClick={function () { send(example); }} className="rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-left text-sm text-zinc-300 transition-colors hover:border-emerald-350/35 hover:text-zinc-50">
                 {example}
               </button>
             );
@@ -58,7 +58,7 @@ export function AssetChat({ asset }: { asset: Asset }) {
         </div>
       </div>
 
-      <div className="rounded-lg border border-white/10 bg-white/[0.04]">
+      <div className="surface-panel overflow-hidden">
         <div className="custom-scrollbar flex max-h-[460px] flex-col gap-4 overflow-y-auto p-4">
           {messages.map(function (message) {
             var assistant = message.role === "assistant";
@@ -67,18 +67,18 @@ export function AssetChat({ asset }: { asset: Asset }) {
                 <div className={assistant ? "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-emerald-350/25 bg-emerald-350/10 text-emerald-350" : "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-gold-400/25 bg-gold-400/10 text-gold-300"}>
                   {assistant ? <Bot className="h-4 w-4" aria-hidden="true" /> : <UserRound className="h-4 w-4" aria-hidden="true" />}
                 </div>
-                <div className="rounded-lg border border-white/10 bg-ink-950/45 p-3 text-sm leading-6 text-zinc-300">
+                <div className="rounded-lg border border-white/10 bg-black/25 p-3 text-sm leading-6 text-zinc-300">
                   <p>{message.content}</p>
                   {message.response ? (
                     <div className="mt-3 space-y-3 border-t border-white/10 pt-3">
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">Données utilisées</p>
+                        <p className="data-label">Données utilisées</p>
                         <ul className="mt-2 space-y-1 text-xs text-zinc-400">
                           {message.response.dataUsed.map(function (item) { return <li key={item}>{item}</li>; })}
                         </ul>
                       </div>
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">Risques</p>
+                        <p className="data-label">Risques</p>
                         <ul className="mt-2 space-y-1 text-xs text-zinc-400">
                           {message.response.risks.map(function (item) { return <li key={item}>{item}</li>; })}
                         </ul>
@@ -98,8 +98,8 @@ export function AssetChat({ asset }: { asset: Asset }) {
             send(input);
           }}
         >
-          <input value={input} onChange={function (event) { setInput(event.target.value); }} placeholder={"Question sur " + asset.ticker} className="min-w-0 flex-1 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-zinc-100 outline-none focus:border-emerald-350/45" />
-          <button type="submit" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-350 text-ink-950 transition hover:bg-emerald-300" aria-label="Envoyer">
+          <input value={input} onChange={function (event) { setInput(event.target.value); }} placeholder={"Question sur " + asset.ticker} aria-label={"Question sur " + asset.ticker} name="asset-chat-question" autoComplete="off" className="min-w-0 flex-1 rounded-lg border border-white/10 bg-[#071018]/80 px-3 py-2 text-sm text-zinc-100 outline-none transition-colors focus-visible:border-emerald-350/60" />
+          <button type="submit" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-350 text-ink-950 transition-colors hover:bg-emerald-300" aria-label="Envoyer">
             <SendHorizontal className="h-4 w-4" aria-hidden="true" />
           </button>
         </form>

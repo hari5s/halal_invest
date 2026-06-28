@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import { Bot, SendHorizontal, Sparkles, TrendingUp, Shield, BarChart3, ChevronRight, Loader2 } from "lucide-react";
 import { assets, searchAssets } from "@/data/assets";
 import { AssetLogo } from "@/components/ui/AssetLogo";
-import { cn } from "@/lib/utils";
 
 const SUGGESTED_QUESTIONS = [
   { icon: TrendingUp, label: "Pourquoi NVIDIA évolue-t-elle aujourd'hui ?", asset: "nvda" },
@@ -119,10 +118,7 @@ export function EthiqAIWidget() {
   }
 
   return (
-    <section className="relative overflow-hidden rounded-xl border border-emerald-350/20 bg-ink-900/80 shadow-panel">
-      {/* Background glow */}
-      <div className="pointer-events-none absolute -top-32 left-1/2 h-64 w-96 -translate-x-1/2 rounded-full bg-emerald-350/5 blur-3xl" aria-hidden="true" />
-
+    <section className="surface-panel terminal-grid">
       <div className="relative p-5 sm:p-6">
         {/* Header */}
         <div className="mb-5 flex items-center gap-3">
@@ -148,7 +144,7 @@ export function EthiqAIWidget() {
                   key={q.label}
                   type="button"
                   onClick={function () { handleSend(q.label); }}
-                  className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-left text-xs text-zinc-300 transition hover:border-emerald-350/35 hover:bg-emerald-350/5 hover:text-zinc-50"
+                  className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2 text-left text-xs text-zinc-300 transition-colors hover:border-emerald-350/35 hover:bg-emerald-350/[0.055] hover:text-zinc-50"
                 >
                   <Icon className="h-3.5 w-3.5 text-emerald-350/70 shrink-0" aria-hidden="true" />
                   {q.label}
@@ -170,7 +166,10 @@ export function EthiqAIWidget() {
                 value={input}
                 onChange={function (e) { handleInput(e.target.value); }}
                 placeholder="Ex: Pourquoi NVIDIA monte aujourd'hui ? Quels risques pour ASML ?"
-                className="h-11 w-full rounded-lg border border-white/10 bg-white/[0.055] pl-4 pr-4 text-sm text-zinc-100 outline-none transition focus:border-emerald-350/50 focus:bg-white/[0.075]"
+                aria-label="Question pour Ethiq AI"
+                name="ethiq-ai-question"
+                autoComplete="off"
+                className="h-11 w-full rounded-lg border border-white/10 bg-[#071018]/80 pl-4 pr-4 text-sm text-zinc-100 outline-none transition-colors placeholder:text-zinc-600 focus-visible:border-emerald-350/60"
                 disabled={loading}
               />
               {/* Autocomplete dropdown */}
@@ -184,7 +183,7 @@ export function EthiqAIWidget() {
                         onClick={function () {
                           handleSend("Analyse " + asset.name + " (" + asset.ticker + ")");
                         }}
-                        className="flex w-full items-center gap-3 px-3 py-2.5 text-left transition hover:bg-white/[0.06]"
+                        className="flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-white/[0.06]"
                       >
                         <AssetLogo name={asset.name} ticker={asset.ticker} tone={asset.logoTone} size="sm" />
                         <span className="min-w-0 flex-1">
@@ -201,7 +200,7 @@ export function EthiqAIWidget() {
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-emerald-350 text-ink-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-emerald-350 text-ink-950 transition-colors hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50"
               aria-label="Envoyer la question"
             >
               <SendHorizontal className="h-4 w-4" aria-hidden="true" />
@@ -211,7 +210,7 @@ export function EthiqAIWidget() {
 
         {/* Loading state */}
         {loading && (
-          <div className="mt-5 flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4">
+          <div className="mt-5 flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4" aria-live="polite">
             <Loader2 className="h-5 w-5 animate-spin text-emerald-350" aria-hidden="true" />
             <div>
               <p className="text-sm font-medium text-zinc-200">Analyse en cours…</p>
@@ -224,21 +223,21 @@ export function EthiqAIWidget() {
         {response && !loading && (
           <div className="mt-5 space-y-4 animate-fade-slide-up">
             {/* Question recap */}
-            <div className="flex items-start gap-2 rounded-lg border border-white/10 bg-ink-950/50 px-3 py-2.5">
+            <div className="flex items-start gap-2 rounded-lg border border-white/10 bg-black/25 px-3 py-2.5">
               <span className="mt-0.5 text-xs font-medium text-zinc-500">Question :</span>
               <p className="text-sm text-zinc-300">{question}</p>
             </div>
 
             {/* Synthesis */}
             <div className="rounded-lg border border-emerald-350/20 bg-emerald-350/[0.07] p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-350/70">Synthèse</p>
+              <p className="data-label text-emerald-350/80">Synthèse</p>
               <p className="mt-2 text-sm leading-6 text-zinc-200">{response.synthesis}</p>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
               {/* Data used */}
-              <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">Données utilisées</p>
+              <div className="surface-card p-4">
+                <p className="data-label">Données utilisées</p>
                 <ul className="mt-2 space-y-1.5">
                   {response.dataUsed.map(function (item) {
                     return <li key={item} className="flex gap-2 text-xs leading-5 text-zinc-400"><span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-emerald-350/60" />{item}</li>;
@@ -247,8 +246,8 @@ export function EthiqAIWidget() {
               </div>
 
               {/* Positives */}
-              <div className="rounded-lg border border-emerald-350/15 bg-emerald-350/[0.04] p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-350/70">Points positifs</p>
+              <div className="surface-card p-4">
+                <p className="data-label text-emerald-350/80">Points positifs</p>
                 <ul className="mt-2 space-y-1.5">
                   {response.positives.map(function (item) {
                     return <li key={item} className="flex gap-2 text-xs leading-5 text-zinc-400"><span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-emerald-350" />{item}</li>;
@@ -257,8 +256,8 @@ export function EthiqAIWidget() {
               </div>
 
               {/* Risks */}
-              <div className="rounded-lg border border-rose-400/15 bg-rose-400/[0.04] p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-rose-400/70">Risques</p>
+              <div className="surface-card p-4">
+                <p className="data-label text-rose-300/80">Risques</p>
                 <ul className="mt-2 space-y-1.5">
                   {response.risks.map(function (item) {
                     return <li key={item} className="flex gap-2 text-xs leading-5 text-zinc-400"><span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-rose-400" />{item}</li>;
@@ -267,8 +266,8 @@ export function EthiqAIWidget() {
               </div>
 
               {/* Sources */}
-              <div className="rounded-lg border border-white/10 bg-white/[0.04] p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">Sources fictives</p>
+              <div className="surface-card p-4">
+                <p className="data-label">Sources fictives</p>
                 <ul className="mt-2 space-y-1.5">
                   {response.sources.map(function (item) {
                     return <li key={item} className="text-xs leading-5 text-zinc-500">— {item}</li>;
